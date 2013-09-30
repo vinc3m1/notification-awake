@@ -1,10 +1,10 @@
-package com.schwimmer.android.smsawake;
+package com.makeramen.notificationawake;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
-public class SmsAwakeSettings extends PreferenceActivity {
+public class NotificationAwakeSettings extends PreferenceActivity {
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {

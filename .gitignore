@@ -18,8 +18,6 @@ local.properties
 # Eclipse project files
 .classpath
 .project
-/smsawake.keystore
-/sign.bat
 
 # IntelliJ
 .idea/
@@ -28,3 +26,6 @@ local.properties
 # Gradle
 build/
 .gradle/
+
+# Mac OSX
+*.DS_Store

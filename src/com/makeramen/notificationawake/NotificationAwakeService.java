@@ -1,4 +1,4 @@
-package com.schwimmer.android.smsawake;
+package com.makeramen.notificationawake;
 
 import android.app.Service;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 
-public class SmsAwakeService extends Service implements Runnable {
+public class NotificationAwakeService extends Service implements Runnable {
 
 	private Handler		handler;
 	private WakeLock	wakeLock;
@@ -26,7 +26,7 @@ public class SmsAwakeService extends Service implements Runnable {
 
 		final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm
-				.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "SmsAwake");
+				.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "NotificationAwake");
 
 		wakeLock.acquire();
 
