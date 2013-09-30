@@ -11,9 +11,9 @@ public class NotificationAwakeSettings extends PreferenceActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.addPreferencesFromResource(R.layout.settings);
+        this.addPreferencesFromResource(R.xml.settings);
 
-        PreferenceManager.setDefaultValues(this, R.layout.settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
         startService(new Intent(this, NotificationListener.class));
     }
