@@ -20,3 +20,11 @@ local.properties
 .project
 /smsawake.keystore
 /sign.bat
+
+# IntelliJ
+.idea/
+*.iml
+
+# Gradle
+build/
+.gradle/
