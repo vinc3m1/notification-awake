@@ -19,7 +19,7 @@ public class NotificationListener extends NotificationListenerService implements
     private SensorManager mSensorManager;
     private Sensor mProximity;
 
-    private float mDistance = 10;
+    private boolean mCovered = true;
 
     @Override
     public void onCreate() {
@@ -39,8 +39,7 @@ public class NotificationListener extends NotificationListenerService implements
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-
-        if ((sbn.getNotification().flags & Notification.FLAG_SHOW_LIGHTS) != 0 && mDistance > 1) {
+        if ((sbn.getNotification().flags & Notification.FLAG_SHOW_LIGHTS) != 0 && mCovered) {
             PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
             final PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "NotificationAwake");
             wakeLock.acquire();
@@ -53,7 +52,6 @@ public class NotificationListener extends NotificationListenerService implements
                 }
             }, delay);
         }
-
     }
 
     @Override public void onNotificationRemoved(StatusBarNotification sbn) {
@@ -61,7 +59,7 @@ public class NotificationListener extends NotificationListenerService implements
     }
 
     @Override public void onSensorChanged(SensorEvent event) {
-        mDistance = event.values[0];
+        mCovered = (event.values[0] < 3);
     }
 
     @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {
