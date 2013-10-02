@@ -33,6 +33,7 @@ public class NotificationListener extends NotificationListenerService implements
 
     @Override
     public void onDestroy() {
+        mSensorManager.unregisterListener(this);
         super.onDestroy();
     }
 
