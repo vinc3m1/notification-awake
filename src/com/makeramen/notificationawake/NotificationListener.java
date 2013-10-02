@@ -19,7 +19,7 @@ public class NotificationListener extends NotificationListenerService implements
     private SensorManager mSensorManager;
     private Sensor mProximity;
 
-    private boolean mCovered = true;
+    private boolean mCovered = false;
 
     @Override
     public void onCreate() {
