@@ -39,7 +39,7 @@ public class NotificationListener extends NotificationListenerService implements
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        if ((sbn.getNotification().flags & Notification.FLAG_SHOW_LIGHTS) != 0 && mCovered) {
+        if ((sbn.getNotification().flags & Notification.FLAG_SHOW_LIGHTS) != 0 && !mCovered) {
             PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
             final PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "NotificationAwake");
             wakeLock.acquire();
