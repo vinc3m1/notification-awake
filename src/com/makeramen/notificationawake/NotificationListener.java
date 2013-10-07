@@ -5,7 +5,6 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -16,8 +15,8 @@ public class NotificationListener extends NotificationListenerService implements
 
     private Handler mHandler;
 
-    private SensorManager mSensorManager;
-    private Sensor mProximity;
+//    private SensorManager mSensorManager;
+//    private Sensor mProximity;
 
     private boolean mCovered = false;
 
@@ -25,15 +24,15 @@ public class NotificationListener extends NotificationListenerService implements
     public void onCreate() {
         super.onCreate();
         mHandler = new Handler();
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-
-        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
+//        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+//        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+//
+//        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     public void onDestroy() {
-        mSensorManager.unregisterListener(this);
+//        mSensorManager.unregisterListener(this);
         super.onDestroy();
     }
 
