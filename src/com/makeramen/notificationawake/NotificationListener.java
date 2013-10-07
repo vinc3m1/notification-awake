@@ -5,9 +5,10 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
@@ -15,8 +16,10 @@ public class NotificationListener extends NotificationListenerService implements
 
     private Handler mHandler;
 
-//    private SensorManager mSensorManager;
-//    private Sensor mProximity;
+    private SensorManager mSensorManager;
+    private Sensor mProximity;
+
+    private int NOTIFICATION_TIMEOUT = 10 * 1000;
 
     private boolean mCovered = false;
 
@@ -24,32 +27,35 @@ public class NotificationListener extends NotificationListenerService implements
     public void onCreate() {
         super.onCreate();
         mHandler = new Handler();
-//        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-//        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-//
-//        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     public void onDestroy() {
-//        mSensorManager.unregisterListener(this);
+        mSensorManager.unregisterListener(this);
         super.onDestroy();
     }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         if ((sbn.getNotification().flags & Notification.FLAG_SHOW_LIGHTS) != 0 && !mCovered) {
-            PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-            final PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "NotificationAwake");
-            wakeLock.acquire();
 
-            int delay = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("timeout", "5")) * 1000;
+            final int origTimeout = android.provider.Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 30 * 1000);
+            android.provider.Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, NOTIFICATION_TIMEOUT);
+
+            PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+            PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "NotificationAwake");
+            wakeLock.acquire();
+            wakeLock.release();
 
             mHandler.postDelayed(new Runnable() {
                 @Override public void run() {
-                    wakeLock.release();
+                    android.provider.Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, origTimeout);
                 }
-            }, delay);
+            }, NOTIFICATION_TIMEOUT + 100);
         }
     }
 
