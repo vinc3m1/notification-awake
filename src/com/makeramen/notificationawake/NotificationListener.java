@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
@@ -26,7 +27,7 @@ public class NotificationListener extends NotificationListenerService implements
     @Override
     public void onCreate() {
         super.onCreate();
-        mHandler = new Handler();
+        mHandler = new Handler(Looper.getMainLooper());
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
